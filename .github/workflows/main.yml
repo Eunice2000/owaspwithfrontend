@@ -23,7 +23,7 @@ jobs:
       - name: Send Message to Slack
         run: |
           SLACK_WEBHOOK_URL=https://hooks.slack.com/services/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
-          ZAP_REPORT_PATH=report.html
+          ZAP_REPORT_PATH=zap_scan/report_html.html
 
           if [ -f "$ZAP_REPORT_PATH" ]; then
             curl -X POST --data-urlencode "payload={\"channel\": \"#devops\", \"username\": \"webhookbot\", \"text\": \"This is posted to #my-channel-here and comes from a bot named webhookbot.\", \"icon_emoji\": \":ghost:\"}" $SLACK_WEBHOOK_URL
