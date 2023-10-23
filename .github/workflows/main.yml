@@ -22,7 +22,7 @@ jobs:
       # Add a step to send a message to Slack
       - name: Send Message to Slack
         run: |
-          SLACK_WEBHOOK_URL=https://hooks.slack.com/services/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
+          SLACK_WEBHOOK_URL=https://hooks.slack.com/services/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
           ZAP_REPORT_PATH=report.html
 
           if [ -f "$ZAP_REPORT_PATH" ]; then
