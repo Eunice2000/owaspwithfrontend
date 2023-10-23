@@ -1,6 +1,6 @@
 on: [push]
 
-jobs:
+jobs: 
   zap_scan:
     runs-on: ubuntu-latest
     name: Scan the web application
