@@ -9,6 +9,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: main
+
       - name: ZAP Scan
         uses: zaproxy/action-baseline@v0.9.0
         with:
@@ -23,16 +24,13 @@ jobs:
         run: |
           SLACK_WEBHOOK_URL=https://hooks.slack.com/services/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
 
-          curl -X POST --data-urlencode "payload={\"channel\": \"#my-channel-here\", \"username\": \"webhookbot\", \"text\": \"This is posted to #my-channel-here and comes from a bot named webhookbot.\", \"icon_emoji\": \":ghost:\"}" $SLACK_WEBHOOK_URL
+          # Use a wildcard to dynamically locate the ZAP scan report
+          ZAP_REPORT_PATH=$(find /github/workspace -name "*.html" -print -quit)
 
-
-      # Send the ZAP scan report to Slack
-      - name: Send ZAP Scan Report to Slack
-        run: |
-          SLACK_WEBHOOK_URL=https://hooks.slack.com/services/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
-
-          ZAP_REPORT_PATH=https://github.com/Eunice2000/owaspwithfrontend/suites/17548016084/artifacts/1002519428
-
-          curl -X POST -H "Content-type: multipart/form-data" -F "file=@$ZAP_REPORT_PATH" -F "channels=#your-slack-channel" $SLACK_WEBHOOK_URL
+          if [ -n "$ZAP_REPORT_PATH" ]; then
+            curl -X POST -H "Content-type: multipart/form-data" -F "file=@$ZAP_REPORT_PATH" -F "channels=#my-channel-here" $SLACK_WEBHOOK_URL
+          else
+            echo "ZAP scan report file not found."
+          fi
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: $SLACK_WEBHOOK_URL
