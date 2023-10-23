@@ -23,7 +23,7 @@ jobs:
       - name: Run OWASP Dependency-Check
         run: |
           npm install -g dependency-check
-          dependency-check --owaspwithfrontend --scan .
+          dependency-check --project owaspwithfrontend --scan .
       - name: Upload Test results
         uses: actions/upload-artifact@master
         with:
