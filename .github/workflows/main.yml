@@ -3,7 +3,7 @@ on: [push]
 jobs:
   zap_scan:
     runs-on: ubuntu-latest
-    name: Scan the webapplication
+    name: Scan the web application
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -17,3 +17,30 @@ jobs:
           target: 'https://github.com/Eunice2000/owaspwithfrontend'
           rules_file_name: '.zap/rules.tsv'
           cmd_options: '-a'
+
+      # Add a step to send the report to Slack
+      - name: Send ZAP Scan Report to Slack
+        run: |
+          SLACK_WEBHOOK_URL=$SLACK_WEBHOOK_URL
+          ZAP_REPORT_PATH=zap_scan/report.html
+
+          curl -X POST -H 'Content-type: application/json' --data "{
+            'text': 'ZAP Scan Report',
+            'attachments': [
+              {
+                'text': 'ZAP scan report attached.',
+                'color': '#36a64f',
+                'fields': [
+                  {
+                    'title': 'ZAP Scan',
+                    'value': '<!here> ZAP scan report is attached. Please review.',
+                    'short': false
+                  }
+                ]
+              }
+            ]
+          }" $SLACK_WEBHOOK_URL
+
+          curl -F file=@$ZAP_REPORT_PATH -F channels=#devops $SLACK_WEBHOOK_URL
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
