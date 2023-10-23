@@ -30,7 +30,7 @@ jobs:
       # Send the ZAP scan report to Slack
       - name: Send ZAP Scan Report to Slack
         run: |
-          SLACK_WEBHOOK_URL=https://hooks.slack.com/services/your/webhook/url
+          SLACK_WEBHOOK_URL=https://hooks.slack.com/services/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
           ZAP_REPORT_PATH=zap_scan/report_html.html
 
           curl -X POST -H "Content-type: multipart/form-data" -F "file=@$ZAP_REPORT_PATH" -F "channels=#your-slack-channel" $SLACK_WEBHOOK_URL
