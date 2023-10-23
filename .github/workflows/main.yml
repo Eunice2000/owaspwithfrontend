@@ -23,5 +23,10 @@ jobs:
       - name: Run OWASP Dependency-Check
         run: |
           npm install -g dependency-check
-          dependency-check --project your-app-name --scan .
+          dependency-check --owaspwithfrontend --scan .
+      - name: Upload Test results
+        uses: actions/upload-artifact@master
+        with:
+           name: Depcheck report
+           path: ${{github.workspace}}/reports
 
