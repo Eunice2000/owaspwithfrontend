@@ -19,19 +19,19 @@ jobs:
           rules_file_name: '.zap/rules.tsv'
           cmd_options: '-a'
 
-      # Move the ZAP scan report to a known location
-      - name: Move ZAP Report
-        run: mv /github/workspace/report.html /github/workspace/zap_report/report.html
+      # # Move the ZAP scan report to a known location
+      # - name: Move ZAP Report
+      #   run: mv /github/workspace/report.html /github/workspace/zap_report/report.html
 
-      # List the contents of the workspace directory after moving the report
-      - name: List Contents
-        run: ls -R /github/workspace
+      # # List the contents of the workspace directory after moving the report
+      # - name: List Contents
+      #   run: ls -R /github/workspace
 
       # Send the ZAP scan report to Slack
       - name: Send ZAP Scan Report to Slack
         run: |
           SLACK_WEBHOOK_URL=https://hooks.slack.com/services/your/webhook/url
-          ZAP_REPORT_PATH=/github/workspace/zap_report/report.html
+          ZAP_REPORT_PATH=zap_scan/report_html.html
 
           curl -X POST -H "Content-type: multipart/form-data" -F "file=@$ZAP_REPORT_PATH" -F "channels=#your-slack-channel" $SLACK_WEBHOOK_URL
         env:
