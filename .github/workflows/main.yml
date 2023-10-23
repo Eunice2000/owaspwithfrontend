@@ -23,12 +23,10 @@ jobs:
       - name: Send Message to Slack
         run: |
           SLACK_WEBHOOK_URL=https://hooks.slack.com/services/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
+          ZAP_REPORT_PATH=report.html
 
-          # Use a wildcard to dynamically locate the ZAP scan report
-          ZAP_REPORT_PATH=$(find /github/workspace -name "*.html" -print -quit)
-
-          if [ -n "$ZAP_REPORT_PATH" ]; then
-            curl -X POST -H "Content-type: multipart/form-data" -F "file=@$ZAP_REPORT_PATH" -F "channels=#my-channel-here" $SLACK_WEBHOOK_URL
+          if [ -f "$ZAP_REPORT_PATH" ]; then
+            curl -X POST --data-urlencode "payload={\"channel\": \"#my-channel-here\", \"username\": \"webhookbot\", \"text\": \"This is posted to #my-channel-here and comes from a bot named webhookbot.\", \"icon_emoji\": \":ghost:\"}" $SLACK_WEBHOOK_URL
           else
             echo "ZAP scan report file not found."
           fi
